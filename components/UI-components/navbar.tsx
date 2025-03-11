@@ -10,8 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Logo } from "./logo"
 
 export function NavBar() {
-  const [searchValue, setSearchValue] = useState("")
   const [activeTab, setActiveTab] = useState("Cards")
+  const [searchValue, setSearchValue] = useState("")
 
   return (
     <div className="flex h-16 items-center justify-between border-b px-4">

@@ -39,7 +39,6 @@ export function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     try {
       console.log(values)
-      // Add your login logic here
     } catch (error) {
       console.error(error)
     }
@@ -51,7 +50,7 @@ export function LoginForm() {
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              Login to Colorlib
+              Login to <span className="text-blue-800">StackList</span>
             </h1>
             <p className="text-sm text-muted-foreground">
               Enter your email below to login to your account
@@ -175,7 +174,8 @@ export function LoginForm() {
     <div
       className="hidden lg:block lg:w-1/2 bg-cover bg-center"
       style={{ backgroundImage: "url('/cocktail-topped-with-orange-slice_141793-643.avif')" }}
-    ></div>
+    >
+    </div>
     </div>
   )
 }

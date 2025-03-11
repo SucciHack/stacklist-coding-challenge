@@ -11,13 +11,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import Image from "next/image"
 
-interface ItemCardProps {
+interface ItemCardProps{
   item: {
     id: string
     title: string
     notes: string
     date: string
+    image:string
     likes: number
     status: "Private" | "Public" | "Shared"
   }
@@ -27,7 +29,7 @@ interface ItemCardProps {
 
 export function ItemCard({ item, isSelected, onToggleSelect }: ItemCardProps) {
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="flex items-center gap-2">
           <Checkbox
@@ -35,10 +37,8 @@ export function ItemCard({ item, isSelected, onToggleSelect }: ItemCardProps) {
             onCheckedChange={() => onToggleSelect(item.id)}
             aria-label={`Select ${item.title}`}
           />
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-white">
-            <span className="text-xs">S</span>
-          </div>
         </div>
+            <Image src={item.image} alt="image" width={300} height={300} className="max-w-32 max-h-32 object-cover object-center"/>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -59,7 +59,7 @@ export function ItemCard({ item, isSelected, onToggleSelect }: ItemCardProps) {
       </CardHeader>
       <CardContent>
         <h3 className="font-medium line-clamp-2">{item.title}</h3>
-        <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{item.notes}</p>
+        <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{item.notes}</p>
       </CardContent>
       <CardFooter className="flex justify-between border-t pt-4">
         <div className="text-sm text-muted-foreground">{item.date}</div>

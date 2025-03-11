@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Lock, MoreHorizontal } from "lucide-react"
 
 import { Checkbox } from "@/components/ui/checkbox"
@@ -15,59 +15,51 @@ import {
 import { Button } from "@/components/ui/button"
 import { ViewMode } from "./filter-bar"
 import { ItemCard } from "./item-card"
+import { useProducts } from "@/hooks/productHook"
+import Image from "next/image"
+
 
 interface Item {
   id: string
   title: string
   notes: string
+  image:string
   date: string
   likes: number
   status: "Private" | "Public" | "Shared"
 }
-
-const initialItems: Item[] = [
-  {
-    id: "1",
-    title: "Shop 50 Inch Smart Android LED TV 4K Ultra HD Google...",
-    notes: "Shop 50 Inch Smart Android LED TV 4K Ultra HD Google...",
-    date: "March 10, 2025",
-    likes: 0,
-    status: "Private",
-  },
-  {
-    id: "2",
-    title: "Wireless Bluetooth Headphones Noise Cancelling Over-Ear",
-    notes: "Premium wireless headphones with active noise cancellation and 30-hour battery life",
-    date: "March 9, 2025",
-    likes: 5,
-    status: "Public",
-  },
-  {
-    id: "3",
-    title: "Smart Home Security Camera System with Night Vision",
-    notes: "Indoor/outdoor security cameras with motion detection and cloud storage",
-    date: "March 8, 2025",
-    likes: 2,
-    status: "Shared",
-  },
-  {
-    id: "4",
-    title: "Ergonomic Office Chair with Lumbar Support",
-    notes: "Adjustable height and armrests with breathable mesh back for comfort",
-    date: "March 7, 2025",
-    likes: 8,
-    status: "Private",
-  },
-]
 
 interface DataTableProps {
   viewMode: ViewMode
 }
 
 export function DataTable({ viewMode }: DataTableProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [items, setItems] = useState<Item[]>(initialItems)
   const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const { products, isLoading, error } = useProducts() 
+  const [items, setItems] = useState<Item[]>([])
+
+  useEffect(() => {
+    if (products) {
+      const transformedProducts: Item[] = products.map((product) => ({
+        id: product.id,
+        title: product.title,
+        notes: product.url,
+        image:product.imageUrl,
+        date: new Date(product.createdAt).toLocaleDateString(),
+        likes: 0, // Assuming likes are not part of the product schema
+        status: "Public", // Assuming status is not part of the product schema
+      }))
+      setItems(transformedProducts)
+    }
+  }, [products])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error loading products</div>
+  }
 
   const toggleSelectAll = () => {
     if (selectedItems.length === items.length) {
@@ -133,10 +125,8 @@ export function DataTable({ viewMode }: DataTableProps) {
                 />
               </td>
               <td className="p-3 flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-white">
-                  <span className="text-xs">S</span>
-                </div>
-                <span className="font-medium">{item.title}</span>
+                <Image src={item.image} alt="image" width={300} height={300} className="max-w-16 max-h-16 object-cover object-center"/>
+                <span className="font-medium line-clamp-1">{item.title}</span>
               </td>
               <td className="p-3 text-muted-foreground">{item.notes}</td>
               <td className="p-3 text-muted-foreground">{item.date}</td>

@@ -5,5 +5,5 @@ export async function getProducts() {
     const response = await fetch(`${baseUrl}/api/v1/products`)
     const products = await response.json()
     console.log("these are the products",products)
-    return products as Product[]
+    return products.data as Product[]
 }

@@ -27,16 +27,7 @@ export function RegisterForm() {
   const initialImage = "/bfg3.webp";
     const [imageUrl, setImageUrl] = useState(initialImage);
 
-  const methods = useForm<RegisterFormValues>({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      imageUrl: null,
-    },
-  })
+  const methods = useForm<RegisterFormValues>()
 
   const { register, handleSubmit, control, watch, formState: { errors } } = methods
 
@@ -44,10 +35,18 @@ export function RegisterForm() {
   password.current = watch("password", "")
 
   async function onSubmit(data: RegisterFormValues) {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     data.imageUrl = imageUrl
     try {
       console.log("Form Submitted:", data)
-      // Add your registration logic here
+      const response = await fetch(`${baseUrl}/api/v1/users`,{
+        method:"POST",
+        headers:{
+          "content-type":"application-json"
+        },
+        body:JSON.stringify(data)
+      })
+      console.log(response)
     } catch (error) {
       console.error("Submission Error:", error)
     }
