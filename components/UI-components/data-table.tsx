@@ -17,6 +17,7 @@ import { ViewMode } from "./filter-bar"
 import { ItemCard } from "./item-card"
 import { useProducts } from "@/hooks/productHook"
 import Image from "next/image"
+import Spinner from "../spinner/spinner"
 
 
 interface Item {
@@ -54,7 +55,7 @@ export function DataTable({ viewMode }: DataTableProps) {
   }, [products])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Spinner/>
   }
 
   if (error) {

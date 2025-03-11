@@ -6,7 +6,9 @@ export default function page() {
   return (
     <div>
       <NavBar/>
-      <ListContainer/>
+      <div className='min-h-screen'>
+        <ListContainer/>
+      </div>
     </div>
   )
 }
