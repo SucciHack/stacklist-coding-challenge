@@ -30,7 +30,11 @@ export async function POST(request:NextRequest){
 
 export async function GET(): Promise<NextResponse> {
     try {
-        const data = await db.product.findMany();
+        const data = await db.product.findMany({
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
         const response: QueriesResponse = { data, error: null };
         return NextResponse.json(response, {
             status: 200
