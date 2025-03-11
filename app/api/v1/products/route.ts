@@ -10,8 +10,6 @@ type productCreateDTO = {
 export async function POST(request:NextRequest){
     const data = await request.json()
     const {url,title,price,imageUrl}:productCreateDTO = data
-    console.log(data)
-
     const newProduct = await db.product.create({
         data:{
             url:url,
@@ -33,7 +31,6 @@ export async function POST(request:NextRequest){
 export async function GET(): Promise<NextResponse> {
     try {
         const data = await db.product.findMany();
-        console.log(data);
         const response: QueriesResponse = { data, error: null };
         return NextResponse.json(response, {
             status: 200
